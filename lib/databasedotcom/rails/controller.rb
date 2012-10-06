@@ -4,11 +4,11 @@ module Databasedotcom
       module ClassMethods
         def dbdc_client
           unless @dbdc_client
-            config = YAML.load_file(File.join(::Rails.root, 'config', 'databasedotcom.yml'))
+            config = YAML.load_file(File.join(::Rails.root, 'config', 'databasedotcom.yml')).with_indifferent_access
             config = config.has_key?(::Rails.env) ? config[::Rails.env] : config
             username = config["username"]
             password = config["password"]
-            @dbdc_client = Databasedotcom::Client.new(config)
+            @dbdc_client = Databasedotcom::Client.new(config.to_hash)
             @dbdc_client.authenticate(:username => username, :password => password)
           end
 
